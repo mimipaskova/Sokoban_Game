@@ -1,6 +1,8 @@
 var canvas;
 var context;
 
+var isLevelFinish = false;
+
 var CELL_WIDTH = 64;
 var CELL_HEIGHT = 64;
 var table = [[1, 1, 1, 1, 1, 1, 1],
@@ -140,10 +142,8 @@ var finishLevel = function() {
 var congrats = function() {
 	if(finishLevel()){
 		alert("Congrats");
-		//console.log("Congrats");
-		return true;
+		isLevelFinish = true;
 	}
-	return false;
 }
 
 var handleInput = function (event) {
@@ -199,7 +199,7 @@ var update = function () {
 				boxCollection,
 				[player]
 		   ]);
-	if(!congrats()){
+	if(!isLevelFinish){
 		congrats();		
 	}
 	window.setTimeout(update, 1000/60);
