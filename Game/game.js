@@ -5,12 +5,21 @@ var isLevelFinish = false;
 
 var CELL_WIDTH = 64;
 var CELL_HEIGHT = 64;
+
 var table = [[1, 1, 1, 1, 1, 1, 1],
 			 [1, 0, 0, 0, 0, 0, 1],
 			 [1, 0, 3, 0, 2, 0, 1],
 			 [1, 0, 9, 0, 0, 0, 1],
 			 [1, 0, 3, 0, 2, 0, 1],
 			 [1, 0, 0, 0, 0, 0, 1],
+			 [1, 1, 1, 1, 1, 1, 1]];
+
+var tableTwo = [[1, 1, 1, 1, 1, 1, 1],
+			 [1, 2, 0, 0, 0, 2, 1],
+			 [1, 0, 3, 3, 3, 0, 1],
+			 [1, 0, 3, 9, 3, 0, 1],
+			 [1, 2, 3, 3, 3, 2, 1],
+			 [1, 2, 2, 0, 2, 2, 1],
 			 [1, 1, 1, 1, 1, 1, 1]];
 
 var level = [];
@@ -129,6 +138,18 @@ var initLevel = function(table) {
 
 }
 
+var resetLevel = function(){
+	level = [];
+	player;
+	wallCollection = [];
+	boxCollection = [];
+	goalCollection = [];
+	table = tableTwo;
+	isLevelFinish = false;
+	initLevel(tableTwo);
+
+}
+
 var finishLevel = function() {
 	for (var i = 0; i < goalCollection.length; i++) {
 		var obj = goalCollection[i];
@@ -143,6 +164,7 @@ var congrats = function() {
 	if(finishLevel()){
 		alert("Congrats");
 		isLevelFinish = true;
+		resetLevel();
 	}
 }
 
