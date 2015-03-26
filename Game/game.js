@@ -255,7 +255,7 @@ var handleInput = function (event) {
 		}
 	}
 	//undo
-	else if (event.keyCode == 90) {
+	else if (event.keyCode == 90 && event.ctrlKey) {
 		undo();	
 	}
 }

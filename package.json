@@ -1,0 +1,25 @@
+{
+  "name": "Sokoban_Game",
+  "version": "1.0.0",
+  "description": "Very popular game Sokoban",
+  "main": "index.js",
+  "dependencies": {
+    "mongoose": "^4.0.0",
+    "mongodb": "^2.0.25",
+    "passport": "^0.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mimipaskova/Sokoban_Game.git"
+  },
+  "author": "Mimi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mimipaskova/Sokoban_Game/issues"
+  },
+  "homepage": "https://github.com/mimipaskova/Sokoban_Game"
+}
