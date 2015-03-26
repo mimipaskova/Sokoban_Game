@@ -153,17 +153,22 @@ var saveState = function(x, y, obj) {
 }
 
 var undo = function() {
+	if(state.length < 1){
+		return;
+	}
 	var lastElement = state[state.length - 1];
 	if(state.length > 1) {
 		var prevLastElement = state[state.length - 2];
 		if(lastElement.obj.x == prevLastElement.x && lastElement.obj.y == prevLastElement.y) {
 			state.pop();
 			state.pop();
-		}		
+			move(lastElement.x, lastElement.y, lastElement.obj);
+			move(prevLastElement.x, prevLastElement.y, prevLastElement.obj);
+			return;		
+		}
 	}
-	else {
-		state.pop();
-	}
+	state.pop();
+	move(lastElement.x, lastElement.y, lastElement.obj);
 }
 
 var resetLevel = function(){
