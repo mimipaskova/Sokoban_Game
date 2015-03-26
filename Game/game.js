@@ -27,6 +27,7 @@ var player;
 var wallCollection = [];
 var boxCollection = [];
 var goalCollection = [];
+var state = [];
 
 var isFree = function(x, y) {
 	return !isWall(x, y) && !isBox(x, y);
@@ -100,6 +101,8 @@ var moveBox = function(toX, toY, fromX, fromY) {
 		return;
 	}
 
+	saveState(toX, toY, box);
+
 	move(toX, toY, box);
 }
 
@@ -138,16 +141,28 @@ var initLevel = function(table) {
 
 }
 
+var saveState = function(x, y, obj) {
+	var curState = new Object();
+	curState.x = x;
+	curState.y = y;
+	curState.obj = obj;
+	state.push(curState);
+
+}
+
 var resetLevel = function(){
 	level = [];
 	player;
 	wallCollection = [];
 	boxCollection = [];
 	goalCollection = [];
-	table = tableTwo;
 	isLevelFinish = false;
-	initLevel(tableTwo);
+	
 
+}
+
+var loadNewLevel = function(table){
+	initLevel(table);
 }
 
 var finishLevel = function() {
@@ -165,6 +180,7 @@ var congrats = function() {
 		alert("Congrats");
 		isLevelFinish = true;
 		resetLevel();
+		loadNewLevel(tableTwo);
 	}
 }
 
@@ -175,40 +191,48 @@ var handleInput = function (event) {
 	if (event.keyCode == 37) {
 		if (isFree(x - 1, y)){
 			move(x - 1, y, player);
+			saveState(x-1,y,player);
 		}
 		if (isBox(x - 1, y) && isFree(x - 2, y)) {
 			moveBox(x - 2, y, x - 1, y);
 			move(x - 1, y, player);
+			saveState(x - 1, y, player);
 		}
 	}
 	//up
 	else if (event.keyCode == 38) {
 		if(isFree(x, y - 1)){
 			move(x, y - 1, player);
+			saveState(x, y-1, player);
 		}
 		if (isBox(x, y - 1) && isFree(x, y - 2)) {
 			moveBox(x, y - 2, x, y - 1);
 			move(x, y - 1, player);
+			saveState(x, y - 1, player);
 		}
 	}
 	//right
 	else if (event.keyCode == 39) {
 		if(isFree(x + 1, y)){
 			move(x + 1, y, player);
+			saveState(x + 1, y, player);
 		}
 		if (isBox(x + 1, y) && isFree(x + 2, y)) {
 			moveBox(x + 2, y, x + 1, y);
 			move(x + 1, y, player);
+			saveState(x + 1, y, player);
 		}
 	}
 	//down
 	else if (event.keyCode == 40) {
 		if(isFree(x, y + 1)){
 			move(x , y + 1, player);
+			saveState(x, y + 1, player);
 		}
 		if (isBox(x, y + 1) && isFree(x, y + 2)) {
 			moveBox(x, y + 2, x, y + 1);
 			move(x, y + 1, player);
+			saveState(x, y + 1, player);
 		}
 	}
 }
