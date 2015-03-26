@@ -81,12 +81,17 @@ var addObject = function (x, y, object) {
 }
 
 var move = function(toX, toY, object) {
-	// if(isPlaceStacked(object.x, object.y)) {
+	// if(isPlaceStacked(object.x, object.y)) {	
 	removeObject(object.x, object.y, object);
 	// }
 	object.x = toX;
 	object.y = toY;
 	addObject(toX, toY, object);
+}
+
+var moveAndSave = function(x, y, object) {
+	saveState(object.x, object.y, object);
+	move(x, y, object);
 }
 
 var moveBox = function(toX, toY, fromX, fromY) {
@@ -101,9 +106,7 @@ var moveBox = function(toX, toY, fromX, fromY) {
 		return;
 	}
 
-	saveState(toX, toY, box);
-
-	move(toX, toY, box);
+	moveAndSave(toX, toY, box);
 }
 
 var initLevel = function(table) {
@@ -147,7 +150,20 @@ var saveState = function(x, y, obj) {
 	curState.y = y;
 	curState.obj = obj;
 	state.push(curState);
+}
 
+var undo = function() {
+	var lastElement = state[state.length - 1];
+	if(state.length > 1) {
+		var prevLastElement = state[state.length - 2];
+		if(lastElement.obj.x == prevLastElement.x && lastElement.obj.y == prevLastElement.y) {
+			state.pop();
+			state.pop();
+		}		
+	}
+	else {
+		state.pop();
+	}
 }
 
 var resetLevel = function(){
@@ -157,8 +173,6 @@ var resetLevel = function(){
 	boxCollection = [];
 	goalCollection = [];
 	isLevelFinish = false;
-	
-
 }
 
 var loadNewLevel = function(table){
@@ -190,50 +204,54 @@ var handleInput = function (event) {
 	//left
 	if (event.keyCode == 37) {
 		if (isFree(x - 1, y)){
-			move(x - 1, y, player);
-			saveState(x-1,y,player);
+			moveAndSave(x - 1, y, player);
+			// saveState(x-1,y,player);
 		}
 		if (isBox(x - 1, y) && isFree(x - 2, y)) {
 			moveBox(x - 2, y, x - 1, y);
-			move(x - 1, y, player);
-			saveState(x - 1, y, player);
+			moveAndSave(x - 1, y, player);
+			// saveState(x - 1, y, player);
 		}
 	}
 	//up
 	else if (event.keyCode == 38) {
 		if(isFree(x, y - 1)){
-			move(x, y - 1, player);
-			saveState(x, y-1, player);
+			moveAndSave(x, y - 1, player);
+			// saveState(x, y-1, player);
 		}
 		if (isBox(x, y - 1) && isFree(x, y - 2)) {
 			moveBox(x, y - 2, x, y - 1);
-			move(x, y - 1, player);
-			saveState(x, y - 1, player);
+			moveAndSave(x, y - 1, player);
+			// saveState(x, y - 1, player);
 		}
 	}
 	//right
 	else if (event.keyCode == 39) {
 		if(isFree(x + 1, y)){
-			move(x + 1, y, player);
-			saveState(x + 1, y, player);
+			moveAndSave(x + 1, y, player);
+			// saveState(x + 1, y, player);
 		}
 		if (isBox(x + 1, y) && isFree(x + 2, y)) {
 			moveBox(x + 2, y, x + 1, y);
-			move(x + 1, y, player);
-			saveState(x + 1, y, player);
+			moveAndSave(x + 1, y, player);
+			// saveState(x + 1, y, player);
 		}
 	}
 	//down
 	else if (event.keyCode == 40) {
 		if(isFree(x, y + 1)){
-			move(x , y + 1, player);
-			saveState(x, y + 1, player);
+			moveAndSave(x , y + 1, player);
+			// saveState(x, y + 1, player);
 		}
 		if (isBox(x, y + 1) && isFree(x, y + 2)) {
 			moveBox(x, y + 2, x, y + 1);
-			move(x, y + 1, player);
-			saveState(x, y + 1, player);
+			moveAndSave(x, y + 1, player);
+			// saveState(x, y + 1, player);
 		}
+	}
+	//undo
+	else if (event.keyCode == 90) {
+		undo();	
 	}
 }
 
